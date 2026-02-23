@@ -20,6 +20,7 @@ func Root() *cobra.Command {
 	cmd.AddCommand(listCmd())
 	cmd.AddCommand(statusCmd())
 	cmd.AddCommand(inspectCmd())
+	cmd.AddCommand(versionCmd())
 
 	return cmd
 }
