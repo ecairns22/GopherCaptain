@@ -13,6 +13,13 @@ func Root() *cobra.Command {
 	}
 
 	cmd.AddCommand(initCmd())
+	cmd.AddCommand(deployCmd())
+	cmd.AddCommand(upgradeCmd())
+	cmd.AddCommand(rollbackCmd())
+	cmd.AddCommand(removeCmd())
+	cmd.AddCommand(listCmd())
+	cmd.AddCommand(statusCmd())
+	cmd.AddCommand(inspectCmd())
 
 	return cmd
 }
