@@ -105,17 +105,13 @@ func LoadFrom(path string) (*Config, error) {
 		return nil, fmt.Errorf("config: github.owner is required")
 	}
 
-	// Resolve MariaDB admin password from file
-	if cfg.MariaDB.AdminPasswordFile == "" {
-		return nil, fmt.Errorf("config: mariadb.admin_password_file is required")
-	}
-	pwData, err := os.ReadFile(cfg.MariaDB.AdminPasswordFile)
-	if err != nil {
-		return nil, fmt.Errorf("reading mariadb admin password from %s: %w", cfg.MariaDB.AdminPasswordFile, err)
-	}
-	cfg.MariaDB.AdminPassword = strings.TrimSpace(string(pwData))
-	if cfg.MariaDB.AdminPassword == "" {
-		return nil, fmt.Errorf("config: mariadb admin password file %s is empty", cfg.MariaDB.AdminPasswordFile)
+	// Resolve MariaDB admin password from file (optional — empty password is valid)
+	if cfg.MariaDB.AdminPasswordFile != "" {
+		pwData, err := os.ReadFile(cfg.MariaDB.AdminPasswordFile)
+		if err != nil {
+			return nil, fmt.Errorf("reading mariadb admin password from %s: %w", cfg.MariaDB.AdminPasswordFile, err)
+		}
+		cfg.MariaDB.AdminPassword = strings.TrimSpace(string(pwData))
 	}
 
 	return &cfg, nil

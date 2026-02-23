@@ -126,6 +126,24 @@ admin_password_file = "/nonexistent/dbpass"
 	}
 }
 
+func TestEmptyPassword(t *testing.T) {
+	dir := t.TempDir()
+
+	// No admin_password_file — empty password is valid (e.g. root with no password)
+	content := `[github]
+token = "ghp_test"
+owner = "testowner"
+`
+	path := writeTestConfig(t, dir, content)
+	cfg, err := LoadFrom(path)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cfg.MariaDB.AdminPassword != "" {
+		t.Errorf("admin_password = %q, want empty", cfg.MariaDB.AdminPassword)
+	}
+}
+
 func TestDefaults(t *testing.T) {
 	dir := t.TempDir()
 	pwFile := writePasswordFile(t, dir, "secret123")
